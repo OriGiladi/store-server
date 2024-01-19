@@ -23,7 +23,7 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
     console.log(req.body)
     const {firstName, lastName, email, password, image} = req.body
     bcrypt
-    .genSalt(SALT as number)
+    .genSalt(Number(SALT as string))
     .then(salt => {
         console.log(firstName, lastName, email, password, image)
         return bcrypt.hash(password, salt)
