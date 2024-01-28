@@ -20,12 +20,10 @@ import { NotFoundError } from '../errors/not-found-error';
 // } 
 
 export const createUser = (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.body)
     const {firstName, lastName, email, password, image} = req.body
     bcrypt
     .genSalt(Number(SALT as string))
     .then(salt => {
-        console.log(firstName, lastName, email, password, image)
         return bcrypt.hash(password, salt)
     })
     .then(hash => {
@@ -36,8 +34,32 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
             const myToken: string | undefined = jwt.sign({id: user.id}, mySecret)
             return res.send({message: 'Registering Succesful!',token: myToken});
         })
-
-        
+        .catch((error) => {
+            console.log(error)
+            next(error)
+        }
+        );
+    })
+    .catch(err => console.error(err.message))
+}
+export const passwordChange = (req: Request, res: Response, next: NextFunction) => {
+    const { email, password } = req.body
+    const filter = {email: email}
+    bcrypt
+    .genSalt(Number(SALT as string))
+    .then(salt => {
+        return bcrypt.hash(password, salt)
+    })
+    .then(hashedPassword => {
+        const changes = {
+            $set: {
+                password: hashedPassword
+            },
+        };
+        UserModel.updateOne( filter, changes)
+        .then((user) => {
+            return res.send({message: 'The password change was done succesfully!', password: password});
+        })
         .catch((error) => {
             console.log(error)
             next(error)
@@ -67,7 +89,6 @@ export const loginCheck = async (req: Request, res: Response, next: NextFunction
             }
             return res.send({message: 'Logging Succesfulfor admin!',token: myToken, admin: true});
         } else {
-            console.log('login fun not ok')
             throw new Unauthorize("You are not authorize to log in!")
         }
             
