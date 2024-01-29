@@ -99,9 +99,7 @@ export const loginCheck = async (req: Request, res: Response, next: NextFunction
 
 export const isSuchUser = async (req: Request, res: Response, next: NextFunction) => { 
     const { email } = req.body;
-    console.log("@@email:", email)
     const user = await UserModel.findOne({ email });
-    console.log("@@", user)
     if (user) {
         return res.send(true);
     } else {
