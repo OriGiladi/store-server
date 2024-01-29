@@ -97,6 +97,15 @@ export const loginCheck = async (req: Request, res: Response, next: NextFunction
     }
 };
 
+export const isSuchUser = async (req: Request, res: Response, next: NextFunction) => { 
+    const { email } = req.body;
+    const user = await UserModel.findOne({ email });
+    if (user) {
+        return res.send(true);
+    } else {
+        return res.send(false);
+    }
+}
 
 export const getUsers = (req: Request, res: Response, next: NextFunction) => { 
     UserModel.find({})
