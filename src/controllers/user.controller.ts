@@ -7,7 +7,6 @@ import jwt from 'jsonwebtoken'
 import { TOKEN_SECRET_KEY, NODE_ENV, SALT } from '../utils/constants';
 import { Unauthorize } from '../errors/unauthorize';
 import { NotFoundError } from '../errors/not-found-error';
-
 // function generateTokens(user){
 //     const mySecret = temp_TOKEN_SECRET_KEY as string 
 //     const myRefresh_Secret = temp_REFRESH_TOKEN_SECRET_KEY as string 
@@ -105,6 +104,24 @@ export const isSuchUser = async (req: Request, res: Response, next: NextFunction
     } else {
         return res.send(false);
     }
+}
+
+// export async function sendConfirmationEmail(req: Request, res: Response, next: NextFunction){
+//     const { email } = req.body;
+//     const resend = new Resend('re_MkNP7uAq_BoK9uyq1ZCii9qx81qLLSafZ');
+
+//     const confirmedCode = Math.round(Math.random() * 1000000); // TODO: replace 1000000 with a constant
+
+//     await resend.emails.send({
+//     from: 'origiladi8@gmail.com',
+//     to: email,
+//     subject: 'The Shop - password reset',
+//     html: `<p>Your confirmation code is <strong>${confirmedCode}</strong>!</p>`
+//     })
+//     return res.send({message: 'Email sent!', code: confirmedCode});
+// }
+export async function sendConfirmationEmail(req: Request, res: Response, next: NextFunction){
+    return res.send({message: 'Email sent!'});
 }
 
 export const getUsers = (req: Request, res: Response, next: NextFunction) => { 

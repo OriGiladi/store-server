@@ -3,6 +3,7 @@ import express, { Application } from 'express';
 import productRouter from "./product";
 import loginRouter from "./login";
 import registerRouter from "./register";
+import paymentRouter from "./payment";
 
 const indexRouter: Router = Router();
 
@@ -18,6 +19,7 @@ indexRouter.use('/product', productRouter)
 indexRouter.use('/login',
 loginRouter)
 
+indexRouter.use('/payment', paymentRouter)
 indexRouter.use('/register', registerRouter)
 
 export default indexRouter;
