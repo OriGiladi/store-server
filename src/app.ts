@@ -15,7 +15,7 @@ import path from 'path';
 const app: Application = express();
 
 const DB_URI_NOTES: string = 'mongodb://127.0.0.1:27017/store-db';
-const allowedOrigins: string [] = ['http://localhost:5173','http://localhost:5174','http://localhost:5175', 'http://localhost:3000'];
+const allowedOrigins: string [] = ['http://localhost:5173','http://localhost:5174','http://localhost:5175', 'http://localhost:3000']; // TODO: move it to const
 mongoose
 .connect(DB_URI_NOTES)
 .then(() => {
@@ -36,11 +36,10 @@ app.use(indexRouter)
 app.use(authMiddleware); // middleware to check token (authentication)
 
 app.use('/users/me', async (req, res) => {
-    const {id} = req.user;
-
+    const { id } = req.user;
     const user = await UserModel.findById(id)
     // error handling
-    res.send(user)
+    res.send(user)  
 });
 
 app.use(adminRouter)
@@ -52,8 +51,4 @@ app.use(errors()); // celecbrate middleware
 app.use(errorHandler); // error handler middleware
 
 export default app;
-
-function history(arg0: string, arg1: { verbose: boolean; }): any {
-    throw new Error('Function not implemented.');
-}
 
