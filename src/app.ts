@@ -36,10 +36,10 @@ app.use(indexRouter)
 app.use(authMiddleware); // middleware to check token (authentication)
 
 app.use('/users/me', async (req, res) => {
-        const { id } = req.user;
-        const user = await UserModel.findById(id)
-        // error handling
-        res.send(user)  
+    const { id } = req.user;
+    const user = await UserModel.findById(id)
+    // error handling
+    res.send(user)  
 });
 
 app.use(adminRouter)
