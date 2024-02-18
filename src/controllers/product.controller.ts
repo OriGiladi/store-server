@@ -10,7 +10,6 @@ export const getAllProducts= (req: Request, res: Response, next: NextFunction) =
 }
 
 export const getSingleProduct= (req: Request, res: Response, next: NextFunction) => { 
-    
     const {id} = req.params
     ProductModel.findById(id)
     .then((product) => {
@@ -18,6 +17,26 @@ export const getSingleProduct= (req: Request, res: Response, next: NextFunction)
     })
     .catch((error) => next(error));
 }  
+
+export const rateProduct = (req: Request, res: Response, next: NextFunction) => {
+    const { ratings } = req.body
+    const { id } = req.params
+    const filter = {_id: id}
+    const changes = {
+        $set: {
+            ratings: ratings,
+        },
+    };
+    ProductModel.updateOne(filter, changes)
+    .then((product) => {
+        return res.send({message: 'Succesful!', product: product});
+    })
+    .catch((error) => {
+        console.log(error)
+        next(error)
+    });
+}
+
 
 export const createProduct = (req: Request, res: Response, next: NextFunction) => {
     const {name, price, description, image} = req.body
