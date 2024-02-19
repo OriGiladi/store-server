@@ -15,8 +15,11 @@ _export(exports, {
     getUsersSchema: function() {
         return getUsersSchema;
     },
-    loginCheckSchema: function() {
-        return loginCheckSchema;
+    loginSchema: function() {
+        return loginSchema;
+    },
+    emailSchema: function() {
+        return emailSchema;
     }
 });
 const _celebrate = require("celebrate");
@@ -37,9 +40,14 @@ const getUsersSchema = {
         password: _celebrate.Joi.string().required()
     })
 };
-const loginCheckSchema = {
+const loginSchema = {
     body: _celebrate.Joi.object({
         email: _celebrate.Joi.string().required(),
         password: _celebrate.Joi.string().required()
+    })
+};
+const emailSchema = {
+    body: _celebrate.Joi.object({
+        email: _celebrate.Joi.string().required()
     })
 };

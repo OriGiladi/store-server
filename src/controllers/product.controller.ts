@@ -37,7 +37,6 @@ export const rateProduct = (req: Request, res: Response, next: NextFunction) => 
     });
 }
 
-
 export const createProduct = (req: Request, res: Response, next: NextFunction) => {
     const {name, price, description, image} = req.body
     ProductModel.create({name, price, description, image })

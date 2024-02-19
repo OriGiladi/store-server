@@ -12,8 +12,14 @@ _export(exports, {
     createUser: function() {
         return createUser;
     },
+    passwordChange: function() {
+        return passwordChange;
+    },
     loginCheck: function() {
         return loginCheck;
+    },
+    isSuchUser: function() {
+        return isSuchUser;
     },
     getUsers: function() {
         return getUsers;
@@ -32,10 +38,8 @@ function _interop_require_default(obj) {
     };
 }
 const createUser = (req, res, next)=>{
-    console.log(req.body);
     const { firstName, lastName, email, password, image } = req.body;
-    _bcrypt.default.genSalt(_constants.SALT).then((salt)=>{
-        console.log(firstName, lastName, email, password, image);
+    _bcrypt.default.genSalt(Number(_constants.SALT)).then((salt)=>{
         return _bcrypt.default.hash(password, salt);
     }).then((hash)=>{
         _usermodel.UserModel.create({
@@ -45,14 +49,39 @@ const createUser = (req, res, next)=>{
             password: hash,
             image
         }).then((user)=>{
-            // const tokens = generateTokens(user)
-            const mySecret = _constants.TOKEN_SECRET_KEY;
+            const mySecret = _constants.DEVELOPMENT_TOKEN_SECRET_KEY;
             const myToken = _jsonwebtoken.default.sign({
                 id: user.id
-            }, mySecret);
+            }, mySecret, {
+                expiresIn: '10m'
+            });
             return res.send({
                 message: 'Registering Succesful!',
                 token: myToken
+            });
+        }).catch((error)=>{
+            console.log(error);
+            next(error);
+        });
+    }).catch((err)=>console.error(err.message));
+};
+const passwordChange = (req, res, next)=>{
+    const { email, password } = req.body;
+    const filter = {
+        email: email
+    };
+    _bcrypt.default.genSalt(Number(_constants.SALT)).then((salt)=>{
+        return _bcrypt.default.hash(password, salt);
+    }).then((hashedPassword)=>{
+        const changes = {
+            $set: {
+                password: hashedPassword
+            }
+        };
+        _usermodel.UserModel.updateOne(filter, changes).then((user)=>{
+            return res.send({
+                message: 'The password change was done succesfully!',
+                password: password
             });
         }).catch((error)=>{
             console.log(error);
@@ -69,32 +98,51 @@ const loginCheck = async (req, res, next)=>{
         if (!user) throw new _notfounderror.NotFoundError("There is no such user");
         const isPasswordValid = await _bcrypt.default.compare(password, user.password);
         if (isPasswordValid) {
-            // const tokens = generateTokens(user)
-            //const mySecret = temp_TOKEN_SECRET_KEY as string 
-            const mySecret = _constants.TOKEN_SECRET_KEY;
-            const myToken = _jsonwebtoken.default.sign({
-                id: user.id
-            }, mySecret);
+            const mySecret = _constants.DEVELOPMENT_TOKEN_SECRET_KEY;
             const admin = await _adminmodel.AdminModel.find({
                 userId: user.id
             });
+            let userJwt = undefined;
             if (admin[0] === undefined) {
+                userJwt = _jsonwebtoken.default.sign({
+                    id: user.id,
+                    userRole: "USER"
+                }, mySecret, {
+                    expiresIn: '10m'
+                }) // TODO: get the roles and expiresIn from an enum in utils
+                ;
                 return res.send({
                     message: 'Logging Succesful!',
-                    token: myToken
+                    userJwt: userJwt
                 });
             }
+            userJwt = _jsonwebtoken.default.sign({
+                id: user.id,
+                userRole: "ADMIN"
+            }, mySecret, {
+                expiresIn: '10m'
+            }) // TODO: get the roles and expiresIn from an enum in utils
+            ;
             return res.send({
-                message: 'Logging Succesfulfor admin!',
-                token: myToken,
-                admin: true
+                message: 'Logging Succesful for admin!',
+                userJwt: userJwt
             });
         } else {
-            console.log('login fun not ok');
             throw new _unauthorize.Unauthorize("You are not authorize to log in!");
         }
     } catch (error) {
         next(error);
+    }
+};
+const isSuchUser = async (req, res, next)=>{
+    const { email } = req.body;
+    const user = await _usermodel.UserModel.findOne({
+        email
+    });
+    if (user) {
+        return res.send(true);
+    } else {
+        return res.send(false);
     }
 };
 const getUsers = (req, res, next)=>{
