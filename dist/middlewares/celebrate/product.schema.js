@@ -14,6 +14,9 @@ _export(exports, {
     },
     getProductSchema: function() {
         return getProductSchema;
+    },
+    rateProductSchema: function() {
+        return rateProductSchema;
     }
 });
 const _celebrate = require("celebrate");
@@ -27,4 +30,12 @@ const createProductSchema = {
 };
 const getProductSchema = {
     body: _celebrate.Joi.object({})
+};
+const rateProductSchema = {
+    body: _celebrate.Joi.object({
+        ratings: _celebrate.Joi.array().items(_celebrate.Joi.object({
+            user: _celebrate.Joi.string().required(),
+            rating: _celebrate.Joi.number().required().min(1).max(5)
+        }))
+    })
 };
