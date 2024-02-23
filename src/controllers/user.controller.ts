@@ -43,7 +43,7 @@ export const passwordChange = (req: Request, res: Response, next: NextFunction) 
                 password: hashedPassword
             },
         };
-        UserModel.updateOne( filter, changes)
+        UserModel.updateOne(filter, changes)
         .then((user) => {
             return res.send({message: 'The password change was done succesfully!', password: password});
         })

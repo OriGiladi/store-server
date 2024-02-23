@@ -15,6 +15,9 @@ _export(exports, {
     getSingleProduct: function() {
         return getSingleProduct;
     },
+    rateProduct: function() {
+        return rateProduct;
+    },
     createProduct: function() {
         return createProduct;
     },
@@ -40,6 +43,27 @@ const getSingleProduct = (req, res, next)=>{
             data: product
         });
     }).catch((error)=>next(error));
+};
+const rateProduct = (req, res, next)=>{
+    const { ratings } = req.body;
+    const { id } = req.params;
+    const filter = {
+        _id: id
+    };
+    const changes = {
+        $set: {
+            ratings: ratings
+        }
+    };
+    _productmodel.ProductModel.updateOne(filter, changes).then((product)=>{
+        return res.send({
+            message: 'Succesful!',
+            product: product
+        });
+    }).catch((error)=>{
+        console.log(error);
+        next(error);
+    });
 };
 const createProduct = (req, res, next)=>{
     const { name, price, description, image } = req.body;

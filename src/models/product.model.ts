@@ -4,7 +4,11 @@ export interface Product extends Document {
     name: string,
     price: string,
     description: string,
-    image: string
+    image: string,
+    ratings: {  
+        user: mongoose.Types.ObjectId,
+        rating: number
+    } []
 }
 
 
@@ -34,6 +38,12 @@ const ProductSchema = new Schema<Product>({
         minlength: 2,
         unique: false
     },
+    ratings: [
+        {
+            user: { type: Schema.Types.ObjectId, ref: 'User' }, 
+            rating: { type: Number, min: 1, max: 5 } 
+        }
+    ],
 });
 
 export const ProductModel = mongoose.model<Product>('Product', ProductSchema);

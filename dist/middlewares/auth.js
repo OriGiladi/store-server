@@ -19,13 +19,15 @@ function _interop_require_default(obj) {
 const authMiddleware = async (req, res, next)=>{
     const { authorization } = req.headers;
     if (!authorization || !authorization.startsWith('Bearer ')) throw new _unauthorize.Unauthorize('Authorization required');
-    const token = authorization.replace('Bearer ', '');
+    const userJwt = authorization.replace('Bearer ', '');
     let payload;
     try {
-        payload = _jsonwebtoken.default.verify(token, _constants.NODE_ENV === 'production' ? _constants.TOKEN_SECRET_KEY : 'dev-key');
+        payload = _jsonwebtoken.default.verify(userJwt, _constants.NODE_ENV === 'dev' ? _constants.DEVELOPMENT_TOKEN_SECRET_KEY : _constants.NODE_ENV === 'production' ? _constants.DEVELOPMENT_TOKEN_SECRET_KEY : "foreign environment");
+        req.user = payload;
     } catch (error) {
-        throw new _unauthorize.Unauthorize('Authorization required!');
+        req.user = {
+            error: "Authorization required!"
+        };
     }
-    req.user = payload;
     next();
 };
