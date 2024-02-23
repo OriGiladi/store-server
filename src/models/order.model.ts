@@ -4,8 +4,9 @@ export interface Order extends Document {
     order: {
         product: mongoose.Types.ObjectId;
         quantity: number,
-        user: mongoose.Types.ObjectId;
-    } []
+        
+    } [],
+    user: mongoose.Types.ObjectId;
 }
 
 const OrderSchema = new Schema<Order>({
@@ -20,12 +21,12 @@ const OrderSchema = new Schema<Order>({
             unique: false,
             minlength: 1,
             maxlength: 4
-        },
-        user: { 
-            type: Schema.Types.ObjectId, 
-            ref: 'User' 
         }, 
-    }]
+    }],
+    user: { 
+        type: Schema.Types.ObjectId, 
+        ref: 'User' 
+    },
 });
 
 export const OrderModel = mongoose.model<Order>('Order', OrderSchema);
