@@ -7,6 +7,7 @@ export interface Order extends Document {
         
     } [],
     user: mongoose.Types.ObjectId;
+    createdAt: Date
 }
 
 const OrderSchema = new Schema<Order>({
@@ -27,6 +28,11 @@ const OrderSchema = new Schema<Order>({
         type: Schema.Types.ObjectId, 
         ref: 'User' 
     },
+    createdAt: {
+        type: Date,
+        required: true,
+        unique: false,
+    }
 });
 
 export const OrderModel = mongoose.model<Order>('Order', OrderSchema);

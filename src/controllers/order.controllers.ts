@@ -5,7 +5,7 @@ import { Request, Response, NextFunction} from "express";
 
 
 export const createOrder = async (req: Request, res: Response, next: NextFunction) => {
-    const { order, user } = req.body
+    const { order, user, createdAt } = req.body
     let isUserIdValid = true;
     let isProductIdValid = true;
     const searchedUser = await UserModel.findOne({ _id: user });  
@@ -15,7 +15,7 @@ export const createOrder = async (req: Request, res: Response, next: NextFunctio
         if(!product) isProductIdValid = false;
     }
     if(!isUserIdValid || !isProductIdValid) return res.send({message: 'Invalid user or product id!'})
-    OrderModel.create({ order, user})
+    OrderModel.create({ order, user, createdAt})
     .then(() => {
         return res.send({message: 'Successful!'});
     })

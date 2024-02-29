@@ -5,9 +5,10 @@ export const createOrderSchema  = {
     body: Joi.object({
         order: Joi.array().items({
             product: Joi.string().required(),
-            quantity: Joi.number().required()
+            quantity: Joi.number().required(),
         }),
-        user: Joi.string().required()
+        user: Joi.string().required(),
+        createdAt: Joi.date().required()
     })
 };
 export const getOrdersOfUserSchema  = {
