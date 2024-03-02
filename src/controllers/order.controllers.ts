@@ -9,10 +9,10 @@ export const createOrder = async (req: Request, res: Response, next: NextFunctio
     let isUserIdValid = true;
     let isProductIdValid = true;
     const searchedUser = await UserModel.findOne({ _id: user });  
-        if(!searchedUser) isUserIdValid = false;
+        if(!searchedUser) isUserIdValid = false; // checks if the inserted user id is valid
     for (let i = 0; i < order.length; i++) {
-        const product = await ProductModel.findOne({ _id:  order[i].product })
-        if(!product) isProductIdValid = false;
+        const product = await ProductModel.findOne({ _id:  order[i].product }) // checks if the inserted product id is valid
+        if(!product) isProductIdValid = false; 
     }
     if(!isUserIdValid || !isProductIdValid) return res.send({message: 'Invalid user or product id!'})
     OrderModel.create({ order, user, createdAt})
