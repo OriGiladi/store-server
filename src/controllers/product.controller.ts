@@ -40,7 +40,7 @@ export const rateProduct = (req: Request, res: Response, next: NextFunction) => 
 export const createProduct = (req: Request, res: Response, next: NextFunction) => {
     const {name, price, description, image} = req.body
     ProductModel.create({name, price, description, image })
-    .then((product) => {
+    .then(() => {
         return res.send({message: 'Succesful!'});
     })
     .catch((error) => {
@@ -74,7 +74,7 @@ export const editProduct = (req: Request, res: Response, next: NextFunction) => 
     };
 
     ProductModel.updateOne(filter, changes)
-    .then((product) => {
+    .then(() => {
         return res.send({message: 'Succesful!'});
     })
     .catch((error) => {

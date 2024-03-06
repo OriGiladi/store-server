@@ -1,5 +1,5 @@
 import { Router, Request, Response, NextFunction } from "express";
-import express, { Application } from 'express';
+import express from 'express';
 import productRouter from "./product";
 import loginRouter from "./login";
 import registerRouter from "./register";

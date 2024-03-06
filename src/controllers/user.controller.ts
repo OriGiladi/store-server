@@ -1,9 +1,9 @@
-import {User, UserModel} from '../models/user.model'
+import { UserModel} from '../models/user.model'
 import { AdminModel } from '../models/admin.model';
 import { Request, Response, NextFunction} from "express";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { DEVELOPMENT_TOKEN_SECRET_KEY,NODE_ENV, SALT } from '../utils/constants';
+import { DEVELOPMENT_TOKEN_SECRET_KEY, SALT, role, tokenExpiry } from '../utils/constants';
 import { Unauthorize } from '../errors/unauthorize';
 import { NotFoundError } from '../errors/not-found-error';
 
@@ -44,7 +44,7 @@ export const passwordChange = (req: Request, res: Response, next: NextFunction) 
             },
         };
         UserModel.updateOne(filter, changes)
-        .then((user) => {
+        .then(() => {
             return res.send({message: 'The password change was done succesfully!', password: password});
         })
         .catch((error) => {
@@ -70,10 +70,10 @@ export const loginCheck = async (req: Request, res: Response, next: NextFunction
             const admin = await AdminModel.find({userId: user.id})
             let userJwt: string | undefined = undefined
             if(admin[0] === undefined){
-                userJwt = jwt.sign({id: user.id, userRole: "USER"}, mySecret, { expiresIn: '10m' }) // TODO: get the roles and expiresIn from an enum in utils
+                userJwt = jwt.sign({id: user.id, userRole: role.user}, mySecret, { expiresIn: tokenExpiry })
                 return res.send({message: 'Logging Succesful!',userJwt: userJwt});
             }
-            userJwt = jwt.sign({id: user.id, userRole: "ADMIN"}, mySecret, { expiresIn: '10m' }) // TODO: get the roles and expiresIn from an enum in utils
+            userJwt = jwt.sign({id: user.id, userRole: role.admin}, mySecret, { expiresIn: tokenExpiry })
             return res.send({message: 'Logging Succesful for admin!',userJwt: userJwt});
         } else {
             throw new Unauthorize("You are not authorize to log in!")
@@ -84,7 +84,7 @@ export const loginCheck = async (req: Request, res: Response, next: NextFunction
     }
 };
 
-export const isSuchUser = async (req: Request, res: Response, next: NextFunction) => { 
+export const isSuchUser = async (req: Request, res: Response) => { 
     const { email } = req.body;
     const user = await UserModel.findOne({ email });
     if (user) {

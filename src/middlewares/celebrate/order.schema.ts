@@ -1,5 +1,4 @@
 import { Joi } from 'celebrate';
-import { UserModel } from '../../models/user.model';
 
 export const createOrderSchema  = {
     body: Joi.object({

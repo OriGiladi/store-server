@@ -8,7 +8,7 @@ import { authMiddleware } from './middlewares/auth';
 import indexRouter from './routes';
 import errorHandler from './middlewares/error-handler';
 import {errors} from 'celebrate';
-const { errorLogger, requestLogger } = require('./middlewares/logger.js');
+import { errorLogger, requestLogger } from './middlewares/logger.js';
 import adminRouter from './routes/admin';
 import { allowedOrigins } from './utils/constants';
 
