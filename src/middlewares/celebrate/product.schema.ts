@@ -6,7 +6,7 @@ export const createProductSchema  = {
         name: Joi.string().required(),
         price: Joi.string().required(),
         description: Joi.string().required(),
-        image: Joi.string(),
+        image: Joi.string().required()
     }),
 };
 export const getProductSchema  = {
