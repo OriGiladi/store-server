@@ -8,7 +8,7 @@ const productRouter: Router = Router();
 
 productRouter.get('/',celebrate(getProductSchema),  getAllProducts)
 productRouter.get('/:id',celebrate(getProductSchema),  getSingleProduct)
-productRouter.patch('/:id',celebrate(rateProductSchema),  rateProduct)
+productRouter.patch('/rate/:id',celebrate(rateProductSchema),  rateProduct)
 
 
 export default productRouter; 
