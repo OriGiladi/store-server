@@ -18,7 +18,7 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
         UserModel.create({firstName, lastName, email, password: hash, image})
         .then((user) => {
             const mySecret = DEVELOPMENT_TOKEN_SECRET_KEY as string
-            const userJwt: string | undefined = jwt.sign({id: user.id}, mySecret, { expiresIn: '10m' })
+            const userJwt: string | undefined = jwt.sign({id: user.id}, mySecret, { expiresIn: tokenExpiry })
             return res.send({message: 'Registering Succesful!',userJwt: userJwt});
         })
         .catch((error) => {

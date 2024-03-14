@@ -15,4 +15,4 @@ export const role = {
     user: "USER",
     admin: "ADMIN"
 }
-export const tokenExpiry = '10m'
+export const tokenExpiry = '30m'
