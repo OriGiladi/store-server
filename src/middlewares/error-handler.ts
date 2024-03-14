@@ -9,7 +9,7 @@ interface CustomError extends Error {
 }
 
 const errorHandler = (
-    error: CustomError, // Use CustomError type here
+    error: CustomError, 
     req: Request,
     res: Response
 ) => {
