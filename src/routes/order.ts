@@ -1,4 +1,4 @@
-import { celebrate, Joi } from 'celebrate';
+import { celebrate } from 'celebrate';
 import { Router } from 'express';
 import { createOrder, getOrdersOfUser } from '../controllers/order.controllers';
 import { createOrderSchema, getOrdersOfUserSchema } from '../middlewares/celebrate/order.schema';

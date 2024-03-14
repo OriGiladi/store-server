@@ -29,7 +29,7 @@ export const rateProduct = (req: Request, res: Response, next: NextFunction) => 
     };
     ProductModel.updateOne(filter, changes)
     .then((product) => {
-        return res.send({message: 'Succesful!', product: product});
+        return res.send({message: 'Succesfully!', product: product});
     })
     .catch((error) => {
         console.log(error)
@@ -40,7 +40,7 @@ export const rateProduct = (req: Request, res: Response, next: NextFunction) => 
 export const createProduct = (req: Request, res: Response, next: NextFunction) => {
     const {name, price, description, image} = req.body
     ProductModel.create({name, price, description, image })
-    .then((product) => {
+    .then(() => {
         return res.send({message: 'Succesful!'});
     })
     .catch((error) => {
@@ -63,7 +63,6 @@ export const editProduct = (req: Request, res: Response, next: NextFunction) => 
     const {id} = req.params
     const filter = {_id: id}
     const {name, price, description, image} = req.body
-
     const changes = {
         $set: {
             name: name,
@@ -74,8 +73,8 @@ export const editProduct = (req: Request, res: Response, next: NextFunction) => 
     };
 
     ProductModel.updateOne(filter, changes)
-    .then((product) => {
-        return res.send({message: 'Succesful!'});
+    .then(() => {
+        return res.send({message: 'Succesfully!'});
     })
     .catch((error) => {
         console.log(error)

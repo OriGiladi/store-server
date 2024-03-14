@@ -16,12 +16,13 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
             payload = jwt.verify(
             userJwt,
             NODE_ENV === 'dev' ? (DEVELOPMENT_TOKEN_SECRET_KEY as Secret) : 
-            NODE_ENV === 'production' ? (DEVELOPMENT_TOKEN_SECRET_KEY as Secret) :
-            "foreign environment"
+            NODE_ENV === 'production' ? (PRODUCTION_TOKEN_SECRET_KEY as Secret) :
+            "foreign environment" 
             );
-            req.user = payload;
+          //  req.user = payload;
+          res.locals.user = payload;
         } catch (error) {
-            req.user = {error: "Authorization required!"}
+            res.locals.user  = {error: "Authorization required!"}
         }
         next();
 }; 

@@ -8,14 +8,13 @@ import { authMiddleware } from './middlewares/auth';
 import indexRouter from './routes';
 import errorHandler from './middlewares/error-handler';
 import {errors} from 'celebrate';
-const { errorLogger, requestLogger } = require('./middlewares/logger.js');
+import { errorLogger, requestLogger } from './middlewares/logger.js';
 import adminRouter from './routes/admin';
-import path from 'path';
+import { allowedOrigins } from './utils/constants';
 
 const app: Application = express();
 
 const DB_URI_NOTES: string = 'mongodb://127.0.0.1:27017/store-db';
-const allowedOrigins: string [] = ['http://localhost:5173','http://localhost:5174','http://localhost:5175', 'http://localhost:3000']; // TODO: move it to const
 mongoose
 .connect(DB_URI_NOTES)
 .then(() => {
@@ -36,7 +35,7 @@ app.use(indexRouter)
 app.use(authMiddleware); // middleware to check token (authentication)
 
 app.use('/users/me', async (req, res) => {
-    const { id } = req.user;
+    const { id } = res.locals.user;
     const user = await UserModel.findById(id)
     // error handling
     res.send(user)  

@@ -1,4 +1,4 @@
-import { celebrate, Joi } from 'celebrate';
+import { Joi } from 'celebrate';
 
 
 export const createUserSchema = {

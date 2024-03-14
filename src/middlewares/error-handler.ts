@@ -1,23 +1,26 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import { NotFoundError } from '../errors/not-found-error';
 import { Unauthorize } from '../errors/unauthorize';
 import { CastError } from '../errors/cast';
 import { ValidationError } from '../errors/validation';
 
+interface CustomError extends Error {
+    statusCode?: number;
+}
+
 const errorHandler = (
-    error: Error,
+    error: CustomError, 
     req: Request,
-    res: Response,
-    next: NextFunction 
+    res: Response
 ) => {
     if (error instanceof NotFoundError || error instanceof Unauthorize || error instanceof CastError || error instanceof Unauthorize || error instanceof ValidationError) {
-        return res.status(error.statusCode).send({ message:`handler: ${error.message }` });
+        return res.status(error.statusCode || 500).send({ message: `handler: ${error.message}` });
     }
     const { statusCode = 500, message, name } = error;
     res.status(statusCode).send({
         message: statusCode === 500
-       ?`handler!: ${name}: ${message}` // ? 'An error occurred on the server'
-        : `handler!: ${message}`,
+            ? `handler!: ${name}: ${message}` 
+            : `handler!: ${message}`,
     });
 };
 
