@@ -8,7 +8,8 @@
     "watch:compile": "swc src -w -d dist",
     "watch:dev": "nodemon --watch \"dist/**/*\" -e js ./dist/main.js",
     "build": "swc src -d dist",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "prepare": "npx tsc"
   },
   "keywords": [],
   "author": "",
