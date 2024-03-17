@@ -20,6 +20,15 @@ _export(exports, {
     },
     SALT: function() {
         return SALT;
+    },
+    allowedOrigins: function() {
+        return allowedOrigins;
+    },
+    role: function() {
+        return role;
+    },
+    tokenExpiry: function() {
+        return tokenExpiry;
     }
 });
 const _dotenv = /*#__PURE__*/ _interop_require_wildcard(require("dotenv"));
@@ -67,3 +76,16 @@ const DEVELOPMENT_TOKEN_SECRET_KEY = process.env.DEVELOPMENT_TOKEN_SECRET_KEY;
 const PRODUCTION_TOKEN_SECRET_KEY = process.env.PRODUCTION_TOKEN_SECRET_KEY;
 const NODE_ENV = process.env.NODE_ENV;
 const SALT = process.env.SALT;
+const allowedOrigins = [
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'http://localhost:5175',
+    'http://localhost:3000',
+    'https://harmonious-duckanoo-86463d.netlify.app',
+    'https://dev--funny-lollipop-a5d339.netlify.app'
+];
+const role = {
+    user: "USER",
+    admin: "ADMIN"
+};
+const tokenExpiry = '30m';

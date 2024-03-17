@@ -57,7 +57,7 @@ const rateProduct = (req, res, next)=>{
     };
     _productmodel.ProductModel.updateOne(filter, changes).then((product)=>{
         return res.send({
-            message: 'Succesful!',
+            message: 'Succesfully!',
             product: product
         });
     }).catch((error)=>{
@@ -72,7 +72,7 @@ const createProduct = (req, res, next)=>{
         price,
         description,
         image
-    }).then((product)=>{
+    }).then(()=>{
         return res.send({
             message: 'Succesful!'
         });
@@ -103,9 +103,9 @@ const editProduct = (req, res, next)=>{
             image: image
         }
     };
-    _productmodel.ProductModel.updateOne(filter, changes).then((product)=>{
+    _productmodel.ProductModel.updateOne(filter, changes).then(()=>{
         return res.send({
-            message: 'Succesful!'
+            message: 'Succesfully!'
         });
     }).catch((error)=>{
         console.log(error);

@@ -15,5 +15,5 @@ const _productcontroller = require("../controllers/product.controller");
 const productRouter = (0, _express.Router)();
 productRouter.get('/', (0, _celebrate.celebrate)(_productschema.getProductSchema), _productcontroller.getAllProducts);
 productRouter.get('/:id', (0, _celebrate.celebrate)(_productschema.getProductSchema), _productcontroller.getSingleProduct);
-productRouter.patch('/:id', (0, _celebrate.celebrate)(_productschema.rateProductSchema), _productcontroller.rateProduct);
+productRouter.patch('/rate/:id', (0, _celebrate.celebrate)(_productschema.rateProductSchema), _productcontroller.rateProduct);
 const _default = productRouter;

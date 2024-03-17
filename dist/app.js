@@ -17,46 +17,42 @@ const _auth = require("./middlewares/auth");
 const _routes = /*#__PURE__*/ _interop_require_default(require("./routes"));
 const _errorhandler = /*#__PURE__*/ _interop_require_default(require("./middlewares/error-handler"));
 const _celebrate = require("celebrate");
+const _logger = require("./middlewares/logger.js");
 const _admin = /*#__PURE__*/ _interop_require_default(require("./routes/admin"));
+const _constants = require("./utils/constants");
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
     };
 }
-const { errorLogger, requestLogger } = require('./middlewares/logger.js');
 const app = (0, _express.default)();
-const DB_URI_NOTES = 'mongodb://127.0.0.1:27017/store-db';
-const allowedOrigins = [
-    'http://localhost:5173',
-    'http://localhost:5174',
-    'http://localhost:5175',
-    'http://localhost:3000'
-]; // TODO: move it to const
+// const DB_URI_NOTES: string = 'mongodb://127.0.0.1:27017/store-db';
+const DB_URI_NOTES = 'mongodb+srv://origiladi8:lGgXh0W9XqXHmQOE@wristwonders.6eiln8f.mongodb.net/?retryWrites=true&w=majority&appName=WristWonders';
 _mongoose.default.connect(DB_URI_NOTES).then(()=>{
     console.log('Successfully connected to MongoDB');
 }).catch((error)=>{
     console.error('Error connecting to MongoDB', error.message);
     process.exit(1);
 });
-app.use(requestLogger);
+app.use(_logger.requestLogger);
 app.use(_bodyparser.default.urlencoded({
     extended: true
 }));
 app.use(_bodyparser.default.json());
 app.use((0, _cors.default)({
-    origin: allowedOrigins,
+    origin: _constants.allowedOrigins,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE"
 }));
 app.use(_routes.default);
 app.use(_auth.authMiddleware); // middleware to check token (authentication)
 app.use('/users/me', async (req, res)=>{
-    const { id } = req.user;
+    const { id } = res.locals.user;
     const user = await _usermodel.UserModel.findById(id);
     // error handling
     res.send(user);
 });
 app.use(_admin.default);
-app.use(errorLogger); // winstons error logger middleware
+app.use(_logger.errorLogger); // winstons error logger middleware
 app.use((0, _celebrate.errors)()); // celecbrate middleware
 app.use(_errorhandler.default); // error handler middleware
 const _default = app;

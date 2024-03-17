@@ -12,6 +12,7 @@ const _express = /*#__PURE__*/ _interop_require_wildcard(require("express"));
 const _product = /*#__PURE__*/ _interop_require_default(require("./product"));
 const _login = /*#__PURE__*/ _interop_require_default(require("./login"));
 const _register = /*#__PURE__*/ _interop_require_default(require("./register"));
+const _order = /*#__PURE__*/ _interop_require_default(require("./order"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
@@ -66,5 +67,6 @@ indexRouter.use(_express.default.json());
 indexRouter.use(logPath);
 indexRouter.use('/product', _product.default);
 indexRouter.use('/login', _login.default);
+indexRouter.use('/order', _order.default);
 indexRouter.use('/register', _register.default);
 const _default = indexRouter;

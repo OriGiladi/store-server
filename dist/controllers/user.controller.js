@@ -50,14 +50,14 @@ const createUser = (req, res, next)=>{
             image
         }).then((user)=>{
             const mySecret = _constants.DEVELOPMENT_TOKEN_SECRET_KEY;
-            const myToken = _jsonwebtoken.default.sign({
+            const userJwt = _jsonwebtoken.default.sign({
                 id: user.id
             }, mySecret, {
-                expiresIn: '10m'
+                expiresIn: _constants.tokenExpiry
             });
             return res.send({
                 message: 'Registering Succesful!',
-                token: myToken
+                userJwt: userJwt
             });
         }).catch((error)=>{
             console.log(error);
@@ -78,7 +78,7 @@ const passwordChange = (req, res, next)=>{
                 password: hashedPassword
             }
         };
-        _usermodel.UserModel.updateOne(filter, changes).then((user)=>{
+        _usermodel.UserModel.updateOne(filter, changes).then(()=>{
             return res.send({
                 message: 'The password change was done succesfully!',
                 password: password
@@ -106,11 +106,10 @@ const loginCheck = async (req, res, next)=>{
             if (admin[0] === undefined) {
                 userJwt = _jsonwebtoken.default.sign({
                     id: user.id,
-                    userRole: "USER"
+                    userRole: _constants.role.user
                 }, mySecret, {
-                    expiresIn: '10m'
-                }) // TODO: get the roles and expiresIn from an enum in utils
-                ;
+                    expiresIn: _constants.tokenExpiry
+                });
                 return res.send({
                     message: 'Logging Succesful!',
                     userJwt: userJwt
@@ -118,11 +117,10 @@ const loginCheck = async (req, res, next)=>{
             }
             userJwt = _jsonwebtoken.default.sign({
                 id: user.id,
-                userRole: "ADMIN"
+                userRole: _constants.role.admin
             }, mySecret, {
-                expiresIn: '10m'
-            }) // TODO: get the roles and expiresIn from an enum in utils
-            ;
+                expiresIn: _constants.tokenExpiry
+            });
             return res.send({
                 message: 'Logging Succesful for admin!',
                 userJwt: userJwt
@@ -134,7 +132,7 @@ const loginCheck = async (req, res, next)=>{
         next(error);
     }
 };
-const isSuchUser = async (req, res, next)=>{
+const isSuchUser = async (req, res)=>{
     const { email } = req.body;
     const user = await _usermodel.UserModel.findOne({
         email

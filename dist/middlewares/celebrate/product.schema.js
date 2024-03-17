@@ -25,7 +25,7 @@ const createProductSchema = {
         name: _celebrate.Joi.string().required(),
         price: _celebrate.Joi.string().required(),
         description: _celebrate.Joi.string().required(),
-        image: _celebrate.Joi.string()
+        image: _celebrate.Joi.string().required()
     })
 };
 const getProductSchema = {
