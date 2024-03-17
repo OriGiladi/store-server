@@ -9,8 +9,11 @@ function _export(target, all) {
     });
 }
 _export(exports, {
-    TOKEN_SECRET_KEY: function() {
-        return TOKEN_SECRET_KEY;
+    DEVELOPMENT_TOKEN_SECRET_KEY: function() {
+        return DEVELOPMENT_TOKEN_SECRET_KEY;
+    },
+    PRODUCTION_TOKEN_SECRET_KEY: function() {
+        return PRODUCTION_TOKEN_SECRET_KEY;
     },
     NODE_ENV: function() {
         return NODE_ENV;
@@ -60,6 +63,7 @@ function _interop_require_wildcard(obj, nodeInterop) {
     return newObj;
 }
 _dotenv.config();
-const TOKEN_SECRET_KEY = process.env.TOKEN_SECRET_KEY;
+const DEVELOPMENT_TOKEN_SECRET_KEY = process.env.DEVELOPMENT_TOKEN_SECRET_KEY;
+const PRODUCTION_TOKEN_SECRET_KEY = process.env.PRODUCTION_TOKEN_SECRET_KEY;
 const NODE_ENV = process.env.NODE_ENV;
 const SALT = process.env.SALT;

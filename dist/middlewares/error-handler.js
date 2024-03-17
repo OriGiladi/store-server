@@ -19,7 +19,6 @@ const errorHandler = (error, req, res, next)=>{
         });
     }
     const { statusCode = 500, message, name } = error;
-    console.log(2);
     res.status(statusCode).send({
         message: statusCode === 500 ? `handler!: ${name}: ${message}` // ? 'An error occurred on the server'
          : `handler!: ${message}`

@@ -66,13 +66,26 @@ const ProductSchema = new _mongoose.Schema({
     description: {
         type: String,
         minlength: 1,
-        maxlength: 30,
+        maxlength: 100,
         unique: false
     },
     image: {
         type: String,
         minlength: 2,
         unique: false
-    }
+    },
+    ratings: [
+        {
+            user: {
+                type: _mongoose.Schema.Types.ObjectId,
+                ref: 'User'
+            },
+            rating: {
+                type: Number,
+                min: 1,
+                max: 5
+            }
+        }
+    ]
 });
 const ProductModel = _mongoose.default.model('Product', ProductSchema);

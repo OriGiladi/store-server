@@ -31,7 +31,7 @@ const allowedOrigins = [
     'http://localhost:5174',
     'http://localhost:5175',
     'http://localhost:3000'
-];
+]; // TODO: move it to const
 _mongoose.default.connect(DB_URI_NOTES).then(()=>{
     console.log('Successfully connected to MongoDB');
 }).catch((error)=>{
@@ -60,6 +60,3 @@ app.use(errorLogger); // winstons error logger middleware
 app.use((0, _celebrate.errors)()); // celecbrate middleware
 app.use(_errorhandler.default); // error handler middleware
 const _default = app;
-function history(arg0, arg1) {
-    throw new Error('Function not implemented.');
-}

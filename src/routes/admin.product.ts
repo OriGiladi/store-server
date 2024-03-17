@@ -1,9 +1,8 @@
 import { Router} from "express";
 
-import { celebrate, Joi } from 'celebrate';
+import { celebrate } from 'celebrate';
 import { createProductSchema, getProductSchema } from "../middlewares/celebrate/product.schema";
 import { createProduct, deleteProduct, editProduct } from "../controllers/product.controller";
-// import { getAllProducts, getSingleProduct } from "../controllers/product.controller";
 
 const crudProductRouter: Router = Router();
 

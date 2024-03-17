@@ -6,9 +6,19 @@ export const createProductSchema  = {
         name: Joi.string().required(),
         price: Joi.string().required(),
         description: Joi.string().required(),
-        image: Joi.string(),
+        image: Joi.string().required()
     }),
 };
 export const getProductSchema  = {
     body: Joi.object({}), 
 };
+export const rateProductSchema  = {
+    body: Joi.object({
+        ratings: Joi.array().items(
+            Joi.object({
+                user: Joi.string().required(),
+                rating: Joi.number().required().min(1).max(5),
+            })
+        ),
+    }),
+}
