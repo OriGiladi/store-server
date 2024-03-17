@@ -66,7 +66,7 @@ const ProductSchema = new _mongoose.Schema({
     description: {
         type: String,
         minlength: 1,
-        maxlength: 100,
+        maxlength: 400,
         unique: false
     },
     image: {

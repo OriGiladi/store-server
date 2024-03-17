@@ -22,10 +22,11 @@ const authMiddleware = async (req, res, next)=>{
     const userJwt = authorization.replace('Bearer ', '');
     let payload;
     try {
-        payload = _jsonwebtoken.default.verify(userJwt, _constants.NODE_ENV === 'dev' ? _constants.DEVELOPMENT_TOKEN_SECRET_KEY : _constants.NODE_ENV === 'production' ? _constants.DEVELOPMENT_TOKEN_SECRET_KEY : "foreign environment");
-        req.user = payload;
+        payload = _jsonwebtoken.default.verify(userJwt, _constants.NODE_ENV === 'dev' ? _constants.DEVELOPMENT_TOKEN_SECRET_KEY : _constants.NODE_ENV === 'production' ? _constants.PRODUCTION_TOKEN_SECRET_KEY : "foreign environment");
+        //  req.user = payload;
+        res.locals.user = payload;
     } catch (error) {
-        req.user = {
+        res.locals.user = {
             error: "Authorization required!"
         };
     }
