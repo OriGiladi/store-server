@@ -26,9 +26,9 @@ function _interop_require_default(obj) {
     };
 }
 const app = (0, _express.default)();
-// const DB_URI_NOTES: string = 'mongodb://127.0.0.1:27017/store-db';
-const DB_URI_NOTES = 'mongodb+srv://origiladi8:lGgXh0W9XqXHmQOE@wristwonders.6eiln8f.mongodb.net/?retryWrites=true&w=majority&appName=WristWonders';
-_mongoose.default.connect(DB_URI_NOTES).then(()=>{
+//const DB_URI_NOTES: string = 'mongodb://127.0.0.1:27017/store-db';
+//const DB_URI_NOTES: string = 'mongodb+srv://origiladi8:lGgXh0W9XqXHmQOE@wristwonders.6eiln8f.mongodb.net/?retryWrites=true&w=majority&appName=WristWonders';
+_mongoose.default.connect(_constants.DB_URI_NOTES).then(()=>{
     console.log('Successfully connected to MongoDB');
 }).catch((error)=>{
     console.error('Error connecting to MongoDB', error.message);

@@ -21,6 +21,9 @@ _export(exports, {
     SALT: function() {
         return SALT;
     },
+    DB_URI_NOTES: function() {
+        return DB_URI_NOTES;
+    },
     allowedOrigins: function() {
         return allowedOrigins;
     },
@@ -76,6 +79,7 @@ const DEVELOPMENT_TOKEN_SECRET_KEY = process.env.DEVELOPMENT_TOKEN_SECRET_KEY;
 const PRODUCTION_TOKEN_SECRET_KEY = process.env.PRODUCTION_TOKEN_SECRET_KEY;
 const NODE_ENV = process.env.NODE_ENV;
 const SALT = process.env.SALT;
+const DB_URI_NOTES = process.env.DB_URI_NOTES;
 const allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:5174',

@@ -11,13 +11,11 @@ import {errors} from 'celebrate';
 import { errorLogger, requestLogger } from './middlewares/logger.js';
 import adminRouter from './routes/admin';
 import { allowedOrigins } from './utils/constants';
-
+import { DB_URI_NOTES } from './utils/constants'
 const app: Application = express();
 
-// const DB_URI_NOTES: string = 'mongodb://127.0.0.1:27017/store-db';
-const DB_URI_NOTES: string = 'mongodb+srv://origiladi8:lGgXh0W9XqXHmQOE@wristwonders.6eiln8f.mongodb.net/?retryWrites=true&w=majority&appName=WristWonders';
 mongoose
-.connect(DB_URI_NOTES)
+.connect(DB_URI_NOTES as string)
 .then(() => {
     console.log('Successfully connected to MongoDB');
 })
