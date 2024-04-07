@@ -11,10 +11,10 @@ export const createUser = (req: Request, res: Response, next: NextFunction) => {
     const {firstName, lastName, email, password, image} = req.body
     bcrypt
     .genSalt(Number(SALT as string))
-    .then(salt => {
+    .then((salt) => {
         return bcrypt.hash(password, salt)
     })
-    .then(hash => {
+    .then((hash: string) => {
         UserModel.create({firstName, lastName, email, password: hash, image})
         .then((user) => {
             const mySecret = DEVELOPMENT_TOKEN_SECRET_KEY as string
@@ -34,10 +34,10 @@ export const passwordChange = (req: Request, res: Response, next: NextFunction) 
     const filter = {email: email}
     bcrypt
     .genSalt(Number(SALT as string))
-    .then(salt => {
+    .then((salt) => {
         return bcrypt.hash(password, salt)
     })
-    .then(hashedPassword => {
+    .then((hashedPassword: string) => {
         const changes = {
             $set: {
                 password: hashedPassword

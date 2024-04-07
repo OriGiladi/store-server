@@ -1,0 +1,60 @@
+version: '3.8'
+
+# Services
+services:
+  # Server service
+  server:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: store-backend
+    ports:
+      - "3000:3000"
+    env_file: ./.env
+    environment:
+      - NODE_ENV=dev
+      - PRODUCTION_TOKEN_SECRET_KEY=e6600e132ab17813c68e9b215a881f04e0b111ae659b6922c677be4136055e34ae0bf0cae5242185458c02e0c0bb2b4ce02235bf886925510a912a3e94947abd
+      - DEVELOPMENT_TOKEN_SECRET_KEY=e6600e132ab17813c68e9b215a881f04e0b111ae659b6922c677be4136055e34ae0bf0cae5242185458c02e0c0bb2b4ce02235bf886925510a912a3e94947abc
+      - SALT=10 
+      - DB_URI_NOTES=mongodb+srv://origiladi8:lGgXh0W9XqXHmQOE@wristwonders.6eiln8f.mongodb.net/?retryWrites=true&w=majority&appName=WristWonders
+
+    depends_on:
+      - mongodb
+
+  # Client service
+  # client:
+  #   build:
+  #     context: ./store-client
+  #     dockerfile: Dockerfile
+
+  #   container_name: frontend
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     - server
+  #   env_file: ./.env
+  #   environment:
+  #     - VITE_EMAIL_JS_PUBLIC_KEY=m5RqLq2ExM_jJuEin
+  #     - VITE_EMAIL_JS_TEMPLATE_ID=template_cduyeke
+  #     - VITE_EMAIL_JS_SERVICE_ID=service_or10774
+  #     - VITE_PAYPAL_CLIENT_ID=AUQUUs64cyphJbdpBjqn7-jnJ6UOGbkvCqmyHEzVnvYJwFwONFVh7ztoXbcIrSrs5AiHVWLLldz2Xwu_
+
+  # Database service
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+
+    env_file: ./.env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=origiladi8
+      - MONGO_INITDB_ROOT_PASSWORD=OriGiladi16!
+
+    ports:
+      - "27017:27017"
+
+    volumes:
+      - ./mydata:/data/db
+
+# Volumes define
+volumes: 
+  mydata:

@@ -11,6 +11,7 @@ export const allowedOrigins: string [] = [
     'http://localhost:5174',
     'http://localhost:5175',
     'http://localhost:3000',
+    'http://localhost:8080',
     'https://harmonious-duckanoo-86463d.netlify.app',
     'https://dev--funny-lollipop-a5d339.netlify.app'
 ]; 

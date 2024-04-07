@@ -1,7 +1,5 @@
 node_modules/
 
-mydata/
-
 # dist or lib
 ../dist/
 /dist
@@ -16,3 +14,5 @@ coverage/
 
 **/error.log
 **/request.log
+
+package-lock.json
