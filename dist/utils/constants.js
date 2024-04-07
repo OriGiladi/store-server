@@ -1,21 +1,96 @@
-import * as dotenv from "dotenv";
-dotenv.config();
-export const DEVELOPMENT_TOKEN_SECRET_KEY = process.env.DEVELOPMENT_TOKEN_SECRET_KEY;
-export const PRODUCTION_TOKEN_SECRET_KEY = process.env.PRODUCTION_TOKEN_SECRET_KEY;
-export const NODE_ENV = process.env.NODE_ENV;
-export const SALT = process.env.SALT;
-export const DB_URI_NOTES = process.env.DB_URI_NOTES;
-export const allowedOrigins = [
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function _export(target, all) {
+    for(var name in all)Object.defineProperty(target, name, {
+        enumerable: true,
+        get: all[name]
+    });
+}
+_export(exports, {
+    DEVELOPMENT_TOKEN_SECRET_KEY: function() {
+        return DEVELOPMENT_TOKEN_SECRET_KEY;
+    },
+    PRODUCTION_TOKEN_SECRET_KEY: function() {
+        return PRODUCTION_TOKEN_SECRET_KEY;
+    },
+    NODE_ENV: function() {
+        return NODE_ENV;
+    },
+    SALT: function() {
+        return SALT;
+    },
+    DB_URI_NOTES: function() {
+        return DB_URI_NOTES;
+    },
+    allowedOrigins: function() {
+        return allowedOrigins;
+    },
+    role: function() {
+        return role;
+    },
+    tokenExpiry: function() {
+        return tokenExpiry;
+    }
+});
+const _dotenv = /*#__PURE__*/ _interop_require_wildcard(require("dotenv"));
+function _getRequireWildcardCache(nodeInterop) {
+    if (typeof WeakMap !== "function") return null;
+    var cacheBabelInterop = new WeakMap();
+    var cacheNodeInterop = new WeakMap();
+    return (_getRequireWildcardCache = function(nodeInterop) {
+        return nodeInterop ? cacheNodeInterop : cacheBabelInterop;
+    })(nodeInterop);
+}
+function _interop_require_wildcard(obj, nodeInterop) {
+    if (!nodeInterop && obj && obj.__esModule) {
+        return obj;
+    }
+    if (obj === null || typeof obj !== "object" && typeof obj !== "function") {
+        return {
+            default: obj
+        };
+    }
+    var cache = _getRequireWildcardCache(nodeInterop);
+    if (cache && cache.has(obj)) {
+        return cache.get(obj);
+    }
+    var newObj = {};
+    var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
+    for(var key in obj){
+        if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) {
+            var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
+            if (desc && (desc.get || desc.set)) {
+                Object.defineProperty(newObj, key, desc);
+            } else {
+                newObj[key] = obj[key];
+            }
+        }
+    }
+    newObj.default = obj;
+    if (cache) {
+        cache.set(obj, newObj);
+    }
+    return newObj;
+}
+_dotenv.config();
+const DEVELOPMENT_TOKEN_SECRET_KEY = process.env.DEVELOPMENT_TOKEN_SECRET_KEY;
+const PRODUCTION_TOKEN_SECRET_KEY = process.env.PRODUCTION_TOKEN_SECRET_KEY;
+const NODE_ENV = process.env.NODE_ENV;
+const SALT = process.env.SALT;
+const DB_URI_NOTES = process.env.DB_URI_NOTES;
+const allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:5174',
     'http://localhost:5175',
     'http://localhost:3000',
+    'http://localhost:8080',
     'https://harmonious-duckanoo-86463d.netlify.app',
     'https://dev--funny-lollipop-a5d339.netlify.app'
 ];
-export const role = {
+const role = {
     user: "USER",
     admin: "ADMIN"
 };
-export const tokenExpiry = '30m';
-//# sourceMappingURL=constants.js.map
+const tokenExpiry = '30m';
