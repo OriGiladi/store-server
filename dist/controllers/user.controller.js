@@ -1,97 +1,152 @@
-import { UserModel } from '../models/user.model';
-import { AdminModel } from '../models/admin.model';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { DEVELOPMENT_TOKEN_SECRET_KEY, SALT, role, tokenExpiry } from '../utils/constants';
-import { Unauthorize } from '../errors/unauthorize';
-import { NotFoundError } from '../errors/not-found-error';
-export const createUser = (req, res, next) => {
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function _export(target, all) {
+    for(var name in all)Object.defineProperty(target, name, {
+        enumerable: true,
+        get: all[name]
+    });
+}
+_export(exports, {
+    createUser: function() {
+        return createUser;
+    },
+    passwordChange: function() {
+        return passwordChange;
+    },
+    loginCheck: function() {
+        return loginCheck;
+    },
+    isSuchUser: function() {
+        return isSuchUser;
+    },
+    getUsers: function() {
+        return getUsers;
+    }
+});
+const _usermodel = require("../models/user.model");
+const _adminmodel = require("../models/admin.model");
+const _bcrypt = /*#__PURE__*/ _interop_require_default(require("bcrypt"));
+const _jsonwebtoken = /*#__PURE__*/ _interop_require_default(require("jsonwebtoken"));
+const _constants = require("../utils/constants");
+const _unauthorize = require("../errors/unauthorize");
+const _notfounderror = require("../errors/not-found-error");
+function _interop_require_default(obj) {
+    return obj && obj.__esModule ? obj : {
+        default: obj
+    };
+}
+const createUser = (req, res, next)=>{
     const { firstName, lastName, email, password, image } = req.body;
-    bcrypt
-        .genSalt(Number(SALT))
-        .then(salt => {
-        return bcrypt.hash(password, salt);
-    })
-        .then(hash => {
-        UserModel.create({ firstName, lastName, email, password: hash, image })
-            .then((user) => {
-            const mySecret = DEVELOPMENT_TOKEN_SECRET_KEY;
-            const userJwt = jwt.sign({ id: user.id }, mySecret, { expiresIn: tokenExpiry });
-            return res.send({ message: 'Registering Succesful!', userJwt: userJwt });
-        })
-            .catch((error) => {
+    _bcrypt.default.genSalt(Number(_constants.SALT)).then((salt)=>{
+        return _bcrypt.default.hash(password, salt);
+    }).then((hash)=>{
+        _usermodel.UserModel.create({
+            firstName,
+            lastName,
+            email,
+            password: hash,
+            image
+        }).then((user)=>{
+            const mySecret = _constants.DEVELOPMENT_TOKEN_SECRET_KEY;
+            const userJwt = _jsonwebtoken.default.sign({
+                id: user.id
+            }, mySecret, {
+                expiresIn: _constants.tokenExpiry
+            });
+            return res.send({
+                message: 'Registering Succesful!',
+                userJwt: userJwt
+            });
+        }).catch((error)=>{
             console.log(error);
             next(error);
         });
-    })
-        .catch(err => console.error(err.message));
+    }).catch((err)=>console.error(err.message));
 };
-export const passwordChange = (req, res, next) => {
+const passwordChange = (req, res, next)=>{
     const { email, password } = req.body;
-    const filter = { email: email };
-    bcrypt
-        .genSalt(Number(SALT))
-        .then(salt => {
-        return bcrypt.hash(password, salt);
-    })
-        .then(hashedPassword => {
+    const filter = {
+        email: email
+    };
+    _bcrypt.default.genSalt(Number(_constants.SALT)).then((salt)=>{
+        return _bcrypt.default.hash(password, salt);
+    }).then((hashedPassword)=>{
         const changes = {
             $set: {
                 password: hashedPassword
-            },
+            }
         };
-        UserModel.updateOne(filter, changes)
-            .then(() => {
-            return res.send({ message: 'The password change was done succesfully!', password: password });
-        })
-            .catch((error) => {
+        _usermodel.UserModel.updateOne(filter, changes).then(()=>{
+            return res.send({
+                message: 'The password change was done succesfully!',
+                password: password
+            });
+        }).catch((error)=>{
             console.log(error);
             next(error);
         });
-    })
-        .catch(err => console.error(err.message));
+    }).catch((err)=>console.error(err.message));
 };
-export const loginCheck = async (req, res, next) => {
+const loginCheck = async (req, res, next)=>{
     const { email, password } = req.body;
     try {
-        const user = await UserModel.findOne({ email });
-        if (!user)
-            throw new NotFoundError("There is no such user");
-        const isPasswordValid = await bcrypt.compare(password, user.password);
+        const user = await _usermodel.UserModel.findOne({
+            email
+        });
+        if (!user) throw new _notfounderror.NotFoundError("There is no such user");
+        const isPasswordValid = await _bcrypt.default.compare(password, user.password);
         if (isPasswordValid) {
-            const mySecret = DEVELOPMENT_TOKEN_SECRET_KEY;
-            const admin = await AdminModel.find({ userId: user.id });
+            const mySecret = _constants.DEVELOPMENT_TOKEN_SECRET_KEY;
+            const admin = await _adminmodel.AdminModel.find({
+                userId: user.id
+            });
             let userJwt = undefined;
             if (admin[0] === undefined) {
-                userJwt = jwt.sign({ id: user.id, userRole: role.user }, mySecret, { expiresIn: tokenExpiry });
-                return res.send({ message: 'Logging Succesful!', userJwt: userJwt });
+                userJwt = _jsonwebtoken.default.sign({
+                    id: user.id,
+                    userRole: _constants.role.user
+                }, mySecret, {
+                    expiresIn: _constants.tokenExpiry
+                });
+                return res.send({
+                    message: 'Logging Succesful!',
+                    userJwt: userJwt
+                });
             }
-            userJwt = jwt.sign({ id: user.id, userRole: role.admin }, mySecret, { expiresIn: tokenExpiry });
-            return res.send({ message: 'Logging Succesful for admin!', userJwt: userJwt });
+            userJwt = _jsonwebtoken.default.sign({
+                id: user.id,
+                userRole: _constants.role.admin
+            }, mySecret, {
+                expiresIn: _constants.tokenExpiry
+            });
+            return res.send({
+                message: 'Logging Succesful for admin!',
+                userJwt: userJwt
+            });
+        } else {
+            throw new _unauthorize.Unauthorize("You are not authorize to log in!");
         }
-        else {
-            throw new Unauthorize("You are not authorize to log in!");
-        }
-    }
-    catch (error) {
+    } catch (error) {
         next(error);
     }
 };
-export const isSuchUser = async (req, res) => {
+const isSuchUser = async (req, res)=>{
     const { email } = req.body;
-    const user = await UserModel.findOne({ email });
+    const user = await _usermodel.UserModel.findOne({
+        email
+    });
     if (user) {
         return res.send(true);
-    }
-    else {
+    } else {
         return res.send(false);
     }
 };
-export const getUsers = (req, res, next) => {
-    UserModel.find({})
-        .then((users) => {
-        res.send({ data: users });
-    })
-        .catch((error) => next(error));
+const getUsers = (req, res, next)=>{
+    _usermodel.UserModel.find({}).then((users)=>{
+        res.send({
+            data: users
+        });
+    }).catch((error)=>next(error));
 };
-//# sourceMappingURL=user.controller.js.map
