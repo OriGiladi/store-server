@@ -13,7 +13,8 @@ export const allowedOrigins: string [] = [
     'http://localhost:3000',
     'http://localhost:8080',
     'https://harmonious-duckanoo-86463d.netlify.app',
-    'https://dev--funny-lollipop-a5d339.netlify.app'
+    'https://dev--funny-lollipop-a5d339.netlify.app',
+    'https://amazing-souffle-aa011f.netlify.app'
 ]; 
 export const role = {
     user: "USER",
