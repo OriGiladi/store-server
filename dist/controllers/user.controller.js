@@ -30,8 +30,7 @@ const _adminmodel = require("../models/admin.model");
 const _bcrypt = /*#__PURE__*/ _interop_require_default(require("bcrypt"));
 const _jsonwebtoken = /*#__PURE__*/ _interop_require_default(require("jsonwebtoken"));
 const _constants = require("../utils/constants");
-const _unauthorize = require("../errors/unauthorize");
-const _notfounderror = require("../errors/not-found-error");
+const _badrequest = require("../errors/bad-request");
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
@@ -95,7 +94,9 @@ const loginCheck = async (req, res, next)=>{
         const user = await _usermodel.UserModel.findOne({
             email
         });
-        if (!user) throw new _notfounderror.NotFoundError("There is no such user");
+        if (!user) {
+            throw new _badrequest.BadRequest("You are not authorize to log in!");
+        }
         const isPasswordValid = await _bcrypt.default.compare(password, user.password);
         if (isPasswordValid) {
             const mySecret = _constants.DEVELOPMENT_TOKEN_SECRET_KEY;
@@ -126,7 +127,7 @@ const loginCheck = async (req, res, next)=>{
                 userJwt: userJwt
             });
         } else {
-            throw new _unauthorize.Unauthorize("You are not authorize to log in!");
+            throw new _badrequest.BadRequest("You are not authorize to log in!");
         }
     } catch (error) {
         next(error);

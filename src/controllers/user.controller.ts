@@ -4,8 +4,7 @@ import { Request, Response, NextFunction} from "express";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { DEVELOPMENT_TOKEN_SECRET_KEY, SALT, role, tokenExpiry } from '../utils/constants';
-import { Unauthorize } from '../errors/unauthorize';
-import { NotFoundError } from '../errors/not-found-error';
+import { BadRequest } from '../errors/bad-request';
 
 export const createUser = (req: Request, res: Response, next: NextFunction) => {
     const {firstName, lastName, email, password, image} = req.body
@@ -61,8 +60,9 @@ export const loginCheck = async (req: Request, res: Response, next: NextFunction
     const { email, password } = req.body;
     try {
         const user = await UserModel.findOne({ email });
-        if (!user) throw new NotFoundError("There is no such user")
-
+        if (!user) {
+            throw new BadRequest("You are not authorize to log in!")
+        }
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if (isPasswordValid) {
@@ -76,7 +76,7 @@ export const loginCheck = async (req: Request, res: Response, next: NextFunction
             userJwt = jwt.sign({id: user.id, userRole: role.admin}, mySecret, { expiresIn: tokenExpiry })
             return res.send({message: 'Logging Succesful for admin!',userJwt: userJwt});
         } else {
-            throw new Unauthorize("You are not authorize to log in!")
+            throw new BadRequest("You are not authorize to log in!")
         }
             
     } catch (error) {
