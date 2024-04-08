@@ -15,7 +15,6 @@ const _bodyparser = /*#__PURE__*/ _interop_require_default(require("body-parser"
 const _usermodel = require("./models/user.model");
 const _auth = require("./middlewares/auth");
 const _routes = /*#__PURE__*/ _interop_require_default(require("./routes"));
-const _errorhandler = /*#__PURE__*/ _interop_require_default(require("./middlewares/error-handler"));
 const _celebrate = require("celebrate");
 const _logger = require("./middlewares/logger.js");
 const _admin = /*#__PURE__*/ _interop_require_default(require("./routes/admin"));
@@ -52,5 +51,8 @@ app.use('/users/me', async (req, res)=>{
 app.use(_admin.default);
 app.use(_logger.errorLogger); // winstons error logger middleware
 app.use((0, _celebrate.errors)()); // celecbrate middleware
-app.use(_errorhandler.default); // error handler middleware
+app.use((req, res, next)=>{
+    const err = new Error('Not Found');
+    next(err);
+});
 const _default = app;
