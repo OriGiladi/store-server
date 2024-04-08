@@ -6,7 +6,6 @@ import bodyParser from 'body-parser';
 import { UserModel } from './models/user.model';
 import { authMiddleware } from './middlewares/auth';
 import indexRouter from './routes';
-import errorHandler from './middlewares/error-handler';
 import {errors} from 'celebrate';
 import { errorLogger, requestLogger } from './middlewares/logger.js';
 import adminRouter from './routes/admin';
@@ -46,7 +45,10 @@ app.use(errorLogger); // winstons error logger middleware
 
 app.use(errors()); // celecbrate middleware
 
-app.use(errorHandler); // error handler middleware
+app.use((req, res, next) => {
+    const err = new Error('Not Found');
+    next(err);
+});
 
 export default app;
 
